@@ -1,4 +1,4 @@
-# 📌 Expense Manager API
+# 📌 Expense Tracker
 
 ## 🚀 Overview
 The **Expense Manager API** is a .NET 9-based application designed to track expenses efficiently. It follows **Clean Architecture** and adheres to **SOLID principles** for maintainability and scalability.
