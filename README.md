@@ -13,6 +13,7 @@ The **Expense Manager API** is a .NET 9-based application designed to track expe
 ✅ **Logging with Serilog**  
 ✅ **Performance Optimizations**  
 ✅ **Centralized Logging with SEQ (Optional)**  
+✅ **SAAS Enablement (all 3 strategies)**
 
 ---
 ## 🛠️ Tech Stack
