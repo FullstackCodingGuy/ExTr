@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Home from '../pages/Home';
 import Search from '../pages/Search';
 import Settings from '../pages/Settings';
+import ExpenseTransactionForm from './ExpenseTransactionForm';
 
 const Tab = createBottomTabNavigator();
 
@@ -41,7 +42,7 @@ const BottomTabs = () => (
       tabBarHideOnKeyboard: true,
     })}
   >
-    <Tab.Screen name="Home" component={Home} />
+    <Tab.Screen name="Home" component={ExpenseTransactionForm} />
     <Tab.Screen name="Search" component={Search} />
     <Tab.Screen name="Settings" component={Settings} />
   </Tab.Navigator>
