@@ -1,23 +1,33 @@
 import React from 'react';
-import type { PropsWithChildren } from 'react';
-import {
-  Text,
-  useColorScheme,
-} from 'react-native';
-
-import { createTamagui, TamaguiProvider, View } from 'tamagui'
-import { defaultConfig } from '@tamagui/config/v4' // for quick config install this
-import { HomeDemo } from './src/pages/HomeDemo';
-import Profile from './src/pages/Profile';
+import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Home from './src/pages/Home';
+import Search from './src/pages/Search';
+import Settings from './src/pages/Settings';
+import { TamaguiProvider } from 'tamagui';
 import config from './src/tamagui.config';
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
+const BottomTabs = () => (
+  <Tab.Navigator>
+    <Tab.Screen name="Home" component={Home} />
+    <Tab.Screen name="Search" component={Search} />
+    <Tab.Screen name="Settings" component={Settings} />
+  </Tab.Navigator>
+);
+
+function App(): React.JSX.Element {
   return (
-    <TamaguiProvider config={config} defaultTheme={isDarkMode ? 'dark' : 'light'}>
-      {/* <HomeDemo /> */}
-      <Profile />
+    <TamaguiProvider config={config}>
+      <NavigationContainer>
+        <Drawer.Navigator>
+          <Drawer.Screen name="Main" component={BottomTabs} />
+          <Drawer.Screen name="Settings" component={Settings} />
+        </Drawer.Navigator>
+      </NavigationContainer>
     </TamaguiProvider>
   );
 }
