@@ -398,3 +398,9 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+pods/
+Pods/
+node_modules/
+vendor/
+
