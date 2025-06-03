@@ -10,6 +10,9 @@
     "test": "jest"
   },
   "dependencies": {
+    "@tamagui/config": "^1.126.13",
+    "@tamagui/stacks": "^1.126.13",
+    "@tamagui/themes": "^1.126.13",
     "react": "19.0.0",
     "react-native": "0.79.2",
     "tamagui": "^1.126.13"
