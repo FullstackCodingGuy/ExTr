@@ -5,6 +5,7 @@ import Home from '../pages/Home';
 import Search from '../pages/Search';
 import Settings from '../pages/Settings';
 import ExpenseTransactionForm from './ExpenseTransactionForm';
+import ExpenseList from './ExpenseList';
 
 const Tab = createBottomTabNavigator();
 
@@ -42,7 +43,7 @@ const BottomTabs = () => (
       tabBarHideOnKeyboard: true,
     })}
   >
-    <Tab.Screen name="Home" component={ExpenseTransactionForm} />
+    <Tab.Screen name="Home" component={ExpenseList} />
     <Tab.Screen name="Search" component={Search} />
     <Tab.Screen name="Settings" component={Settings} />
   </Tab.Navigator>
