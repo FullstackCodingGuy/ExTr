@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Home from '../pages/Home';
 import Search from '../pages/Search';
-import Settings from '../pages/Settings';
+import SettingsPage from '../pages/SettingsPage';
 import ExpenseTransactionForm from './ExpenseTransactionForm';
 import ExpenseList from './ExpenseList';
 
@@ -45,7 +45,7 @@ const BottomTabs = () => (
   >
     <Tab.Screen name="Home" component={ExpenseList} />
     <Tab.Screen name="Search" component={Search} />
-    <Tab.Screen name="Settings" component={Settings} />
+    <Tab.Screen name="Settings" component={SettingsPage} />
   </Tab.Navigator>
 );
 

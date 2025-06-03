@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import BottomTabs from './src/components/BottomTabs';
 import CustomHeader from './src/components/CustomHeader';
-import Settings from './src/pages/Settings';
+import SettingsPage from './src/pages/SettingsPage';
 import { TamaguiProvider } from 'tamagui';
 import config from './src/tamagui.config';
 
@@ -21,7 +21,7 @@ function App(): React.JSX.Element {
           }}
         >
           <Drawer.Screen name="Main" component={BottomTabs} />
-          <Drawer.Screen name="Settings" component={Settings} />
+          <Drawer.Screen name="Settings" component={SettingsPage} />
         </Drawer.Navigator>
       </NavigationContainer>
     </TamaguiProvider>
