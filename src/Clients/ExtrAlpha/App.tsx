@@ -1,19 +1,16 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import BottomTabs from './src/components/BottomTabs';
 import CustomHeader from './src/components/CustomHeader';
 import SettingsPage from './src/pages/SettingsPage';
-import { TamaguiProvider } from 'tamagui';
-import config from './src/tamagui.config';
+import ThemeProvider from './src/providers/ThemeProvider';
 
 const Drawer = createDrawerNavigator();
 
 function App(): React.JSX.Element {
   return (
-    <TamaguiProvider config={config}>
-      <StatusBar barStyle="dark-content" backgroundColor="#f8f9fa" />
+    <ThemeProvider>
       <NavigationContainer>
         <Drawer.Navigator
           screenOptions={{
@@ -24,7 +21,7 @@ function App(): React.JSX.Element {
           <Drawer.Screen name="Settings" component={SettingsPage} />
         </Drawer.Navigator>
       </NavigationContainer>
-    </TamaguiProvider>
+    </ThemeProvider>
   );
 }
 

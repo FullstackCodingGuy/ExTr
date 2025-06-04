@@ -2,55 +2,23 @@ import React, { useState } from 'react';
 import { YStack, XStack, Text, Card, H3, Separator, Switch, Select, Button } from 'tamagui';
 import { ScrollView, Alert, TouchableOpacity, Modal } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useSettingsStore, themeOptions, languageOptions, currencyOptions } from '../store/settingsStore';
 
 const SettingsPage = () => {
-  const [selectedTheme, setSelectedTheme] = useState('light');
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
-  const [selectedCurrency, setSelectedCurrency] = useState('USD');
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const [biometricEnabled, setBiometricEnabled] = useState(false);
+  // Get settings from store
+  const { 
+    settings, 
+    setTheme, 
+    setLanguage, 
+    setCurrency, 
+    setNotifications, 
+    setBiometric 
+  } = useSettingsStore();
   
   // Dropdown state
   const [themeDropdownVisible, setThemeDropdownVisible] = useState(false);
   const [languageDropdownVisible, setLanguageDropdownVisible] = useState(false);
   const [currencyDropdownVisible, setCurrencyDropdownVisible] = useState(false);
-
-  // Options
-  const themeOptions = [
-    { value: 'light', label: '☀️ Light Theme' },
-    { value: 'dark', label: '🌙 Dark Theme' },
-    { value: 'auto', label: '🔄 Auto (System)' }
-  ];
-
-  const languageOptions = [
-    { value: 'en', label: '🇺🇸 English' },
-    { value: 'es', label: '🇪🇸 Spanish' },
-    { value: 'fr', label: '🇫🇷 French' },
-    { value: 'de', label: '🇩🇪 German' },
-    { value: 'zh', label: '🇨🇳 Chinese' },
-    { value: 'ja', label: '🇯🇵 Japanese' },
-    { value: 'ko', label: '🇰🇷 Korean' },
-    { value: 'it', label: '🇮🇹 Italian' },
-    { value: 'pt', label: '🇵🇹 Portuguese' },
-    { value: 'ru', label: '🇷🇺 Russian' },
-    { value: 'ar', label: '🇸🇦 Arabic' },
-    { value: 'hi', label: '🇮🇳 Hindi' }
-  ];
-
-  const currencyOptions = [
-    { value: 'USD', label: '🇺🇸 USD - US Dollar' },
-    { value: 'EUR', label: '🇪🇺 EUR - Euro' },
-    { value: 'GBP', label: '🇬🇧 GBP - British Pound' },
-    { value: 'JPY', label: '🇯🇵 JPY - Japanese Yen' },
-    { value: 'INR', label: '🇮🇳 INR - Indian Rupee' },
-    { value: 'CAD', label: '🇨🇦 CAD - Canadian Dollar' },
-    { value: 'AUD', label: '🇦🇺 AUD - Australian Dollar' },
-    { value: 'CHF', label: '🇨🇭 CHF - Swiss Franc' },
-    { value: 'CNY', label: '🇨🇳 CNY - Chinese Yuan' },
-    { value: 'SEK', label: '🇸🇪 SEK - Swedish Krona' },
-    { value: 'NOK', label: '🇳🇴 NOK - Norwegian Krone' },
-    { value: 'SGD', label: '🇸🇬 SGD - Singapore Dollar' }
-  ];
 
   // Custom Dropdown Component
   const CustomDropdown = ({ visible, onClose, options, selectedValue, onSelect, title }) => (
@@ -60,17 +28,17 @@ const SettingsPage = () => {
         onPress={onClose}
       >
         <YStack 
-          backgroundColor="white" 
+          backgroundColor="$backgroundStrong" 
           borderRadius={12} 
           padding={20} 
           margin={20} 
           maxHeight="70%" 
           minWidth="80%"
           borderWidth={1} 
-          borderColor="#e9ecef"
+          borderColor="$borderColor"
         >
           <XStack justifyContent="space-between" alignItems="center" marginBottom={15}>
-            <Text fontSize={18} fontWeight="bold" color="#333">{title}</Text>
+            <Text fontSize={18} fontWeight="bold" color="$color">{title}</Text>
             <TouchableOpacity onPress={onClose}>
               <Icon name="close" size={24} color="#666" />
             </TouchableOpacity>
@@ -89,13 +57,13 @@ const SettingsPage = () => {
                   <XStack 
                     padding={12} 
                     borderRadius={8} 
-                    backgroundColor={selectedValue === option.value ? "#e3f2fd" : "transparent"}
+                    backgroundColor={selectedValue === option.value ? "$blue2" : "transparent"}
                     borderWidth={selectedValue === option.value ? 1 : 0}
                     borderColor={selectedValue === option.value ? "#007bff" : "transparent"}
                     alignItems="center"
                     justifyContent="space-between"
                   >
-                    <Text color="#333" fontSize={14}>{option.label}</Text>
+                    <Text color="$color" fontSize={14}>{option.label}</Text>
                     {selectedValue === option.value && (
                       <Icon name="check" size={20} color="#007bff" />
                     )}
@@ -110,7 +78,7 @@ const SettingsPage = () => {
   );
 
   const handleSaveSettings = () => {
-    // Save settings logic here
+    // Settings are automatically saved due to Zustand persistence
     Alert.alert('Success', 'Settings saved successfully!', [{ text: 'OK' }]);
   };
 
@@ -140,12 +108,12 @@ const SettingsPage = () => {
   };
 
   return (
-    <YStack flex={1} backgroundColor="#f8f9fa">
+    <YStack flex={1} backgroundColor="$background">
       {/* Header Section */}
-      <YStack padding={20} paddingBottom={10} backgroundColor="white" borderBottomWidth={1} borderBottomColor="#e9ecef">
+      <YStack padding={20} paddingBottom={10} backgroundColor="$backgroundStrong" borderBottomWidth={1} borderBottomColor="$borderColor">
         <XStack alignItems="center" justifyContent="center" space={10}>
           <Icon name="cog" size={24} color="#007bff" />
-          <H3 textAlign="center" color="#333">Settings</H3>
+          <H3 textAlign="center" color="$color">Settings</H3>
         </XStack>
       </YStack>
 
@@ -153,28 +121,28 @@ const SettingsPage = () => {
         <YStack paddingHorizontal={20} space={15} paddingBottom={100}>
           
           {/* Appearance Section */}
-          <Card elevation={2} padding={16} backgroundColor="white" borderRadius={12} borderWidth={1} borderColor="#e9ecef">
+          <Card elevation={2} padding={16} backgroundColor="$backgroundStrong" borderRadius={12} borderWidth={1} borderColor="$borderColor">
             <YStack space={15}>
               <XStack alignItems="center" space={10}>
                 <Icon name="palette" size={20} color="#007bff" />
-                <Text fontSize={18} fontWeight="bold" color="#333">Appearance</Text>
+                <Text fontSize={18} fontWeight="bold" color="$color">Appearance</Text>
               </XStack>
               
               <YStack space={10}>
-                <Text fontSize={14} fontWeight="600" color="#666">Theme</Text>
+                <Text fontSize={14} fontWeight="600" color="$colorPress">Theme</Text>
                 <TouchableOpacity onPress={() => setThemeDropdownVisible(true)}>
                   <XStack 
-                    backgroundColor="#f8f9fa" 
+                    backgroundColor="$background" 
                     borderRadius={8} 
                     borderWidth={1} 
-                    borderColor="#dee2e6"
+                    borderColor="$borderColor"
                     height={45}
                     paddingHorizontal={12}
                     alignItems="center"
                     justifyContent="space-between"
                   >
-                    <Text color="#333" fontSize={14}>
-                      {themeOptions.find(option => option.value === selectedTheme)?.label}
+                    <Text color="$color" fontSize={14}>
+                      {themeOptions.find(option => option.value === settings.theme)?.label}
                     </Text>
                     <Icon name="chevron-down" size={20} color="#666" />
                   </XStack>
@@ -184,28 +152,28 @@ const SettingsPage = () => {
           </Card>
 
           {/* Language & Region Section */}
-          <Card elevation={2} padding={16} backgroundColor="white" borderRadius={12} borderWidth={1} borderColor="#e9ecef">
+          <Card elevation={2} padding={16} backgroundColor="$backgroundStrong" borderRadius={12} borderWidth={1} borderColor="$borderColor">
             <YStack space={15}>
               <XStack alignItems="center" space={10}>
                 <Icon name="translate" size={20} color="#007bff" />
-                <Text fontSize={18} fontWeight="bold" color="#333">Language & Region</Text>
+                <Text fontSize={18} fontWeight="bold" color="$color">Language & Region</Text>
               </XStack>
               
               <YStack space={10}>
-                <Text fontSize={14} fontWeight="600" color="#666">Language</Text>
+                <Text fontSize={14} fontWeight="600" color="$colorPress">Language</Text>
                 <TouchableOpacity onPress={() => setLanguageDropdownVisible(true)}>
                   <XStack 
-                    backgroundColor="#f8f9fa" 
+                    backgroundColor="$background" 
                     borderRadius={8} 
                     borderWidth={1} 
-                    borderColor="#dee2e6"
+                    borderColor="$borderColor"
                     height={45}
                     paddingHorizontal={12}
                     alignItems="center"
                     justifyContent="space-between"
                   >
-                    <Text color="#333" fontSize={14}>
-                      {languageOptions.find(option => option.value === selectedLanguage)?.label}
+                    <Text color="$color" fontSize={14}>
+                      {languageOptions.find(option => option.value === settings.language)?.label}
                     </Text>
                     <Icon name="chevron-down" size={20} color="#666" />
                   </XStack>
@@ -213,20 +181,20 @@ const SettingsPage = () => {
               </YStack>
 
               <YStack space={10}>
-                <Text fontSize={14} fontWeight="600" color="#666">Default Currency</Text>
+                <Text fontSize={14} fontWeight="600" color="$colorPress">Default Currency</Text>
                 <TouchableOpacity onPress={() => setCurrencyDropdownVisible(true)}>
                   <XStack 
-                    backgroundColor="#f8f9fa" 
+                    backgroundColor="$background" 
                     borderRadius={8} 
                     borderWidth={1} 
-                    borderColor="#dee2e6"
+                    borderColor="$borderColor"
                     height={45}
                     paddingHorizontal={12}
                     alignItems="center"
                     justifyContent="space-between"
                   >
-                    <Text color="#333" fontSize={14}>
-                      {currencyOptions.find(option => option.value === selectedCurrency)?.label}
+                    <Text color="$color" fontSize={14}>
+                      {currencyOptions.find(option => option.value === settings.currency)?.label}
                     </Text>
                     <Icon name="chevron-down" size={20} color="#666" />
                   </XStack>
@@ -236,62 +204,62 @@ const SettingsPage = () => {
           </Card>
 
           {/* Notifications Section */}
-          <Card elevation={2} padding={16} backgroundColor="white" borderRadius={12} borderWidth={1} borderColor="#e9ecef">
+          <Card elevation={2} padding={16} backgroundColor="$backgroundStrong" borderRadius={12} borderWidth={1} borderColor="$borderColor">
             <YStack space={15}>
               <XStack alignItems="center" space={10}>
                 <Icon name="bell" size={20} color="#007bff" />
-                <Text fontSize={18} fontWeight="bold" color="#333">Notifications</Text>
+                <Text fontSize={18} fontWeight="bold" color="$color">Notifications</Text>
               </XStack>
               
               <XStack justifyContent="space-between" alignItems="center">
                 <YStack>
-                  <Text fontSize={14} fontWeight="600" color="#666">Push Notifications</Text>
-                  <Text fontSize={12} color="#999">Receive expense reminders and updates</Text>
+                  <Text fontSize={14} fontWeight="600" color="$colorPress">Push Notifications</Text>
+                  <Text fontSize={12} color="$colorPress">Receive expense reminders and updates</Text>
                 </YStack>
                 <Switch 
-                  checked={notificationsEnabled} 
-                  onCheckedChange={setNotificationsEnabled}
-                  backgroundColor={notificationsEnabled ? "#007bff" : "#e0e0e0"}
+                  checked={settings.notifications} 
+                  onCheckedChange={setNotifications}
+                  backgroundColor={settings.notifications ? "#007bff" : "#e0e0e0"}
                 />
               </XStack>
             </YStack>
           </Card>
 
           {/* Security Section */}
-          <Card elevation={2} padding={16} backgroundColor="white" borderRadius={12} borderWidth={1} borderColor="#e9ecef">
+          <Card elevation={2} padding={16} backgroundColor="$backgroundStrong" borderRadius={12} borderWidth={1} borderColor="$borderColor">
             <YStack space={15}>
               <XStack alignItems="center" space={10}>
                 <Icon name="shield-check" size={20} color="#007bff" />
-                <Text fontSize={18} fontWeight="bold" color="#333">Security</Text>
+                <Text fontSize={18} fontWeight="bold" color="$color">Security</Text>
               </XStack>
               
               <XStack justifyContent="space-between" alignItems="center">
                 <YStack>
-                  <Text fontSize={14} fontWeight="600" color="#666">Biometric Authentication</Text>
-                  <Text fontSize={12} color="#999">Use fingerprint or face ID to unlock</Text>
+                  <Text fontSize={14} fontWeight="600" color="$colorPress">Biometric Authentication</Text>
+                  <Text fontSize={12} color="$colorPress">Use fingerprint or face ID to unlock</Text>
                 </YStack>
                 <Switch 
-                  checked={biometricEnabled} 
-                  onCheckedChange={setBiometricEnabled}
-                  backgroundColor={biometricEnabled ? "#007bff" : "#e0e0e0"}
+                  checked={settings.biometric} 
+                  onCheckedChange={setBiometric}
+                  backgroundColor={settings.biometric ? "#007bff" : "#e0e0e0"}
                 />
               </XStack>
             </YStack>
           </Card>
 
           {/* Data & Privacy Section */}
-          <Card elevation={2} padding={16} backgroundColor="white" borderRadius={12} borderWidth={1} borderColor="#e9ecef">
+          <Card elevation={2} padding={16} backgroundColor="$backgroundStrong" borderRadius={12} borderWidth={1} borderColor="$borderColor">
             <YStack space={15}>
               <XStack alignItems="center" space={10}>
                 <Icon name="database" size={20} color="#007bff" />
-                <Text fontSize={18} fontWeight="bold" color="#333">Data & Privacy</Text>
+                <Text fontSize={18} fontWeight="bold" color="$color">Data & Privacy</Text>
               </XStack>
               
               <YStack space={12}>
                 <XStack justifyContent="space-between" alignItems="center">
                   <XStack alignItems="center" space={8}>
                     <Icon name="export" size={16} color="#666" />
-                    <Text fontSize={14} color="#666">Export Data</Text>
+                    <Text fontSize={14} color="$colorPress">Export Data</Text>
                   </XStack>
                   <Button size="small" backgroundColor="#007bff" color="white" borderRadius={6} onPress={handleExportData}>
                     Export
@@ -301,7 +269,7 @@ const SettingsPage = () => {
                 <XStack justifyContent="space-between" alignItems="center">
                   <XStack alignItems="center" space={8}>
                     <Icon name="delete-sweep" size={16} color="#666" />
-                    <Text fontSize={14} color="#666">Clear Cache</Text>
+                    <Text fontSize={14} color="$colorPress">Clear Cache</Text>
                   </XStack>
                   <Button size="small" backgroundColor="#6c757d" color="white" borderRadius={6} onPress={handleClearCache}>
                     Clear
@@ -322,26 +290,26 @@ const SettingsPage = () => {
           </Card>
 
           {/* About Section */}
-          <Card elevation={2} padding={16} backgroundColor="white" borderRadius={12} borderWidth={1} borderColor="#e9ecef">
+          <Card elevation={2} padding={16} backgroundColor="$backgroundStrong" borderRadius={12} borderWidth={1} borderColor="$borderColor">
             <YStack space={15}>
               <XStack alignItems="center" space={10}>
                 <Icon name="information" size={20} color="#007bff" />
-                <Text fontSize={18} fontWeight="bold" color="#333">About</Text>
+                <Text fontSize={18} fontWeight="bold" color="$color">About</Text>
               </XStack>
               
               <YStack space={8}>
                 <XStack justifyContent="space-between">
                   <XStack alignItems="center" space={8}>
                     <Icon name="application" size={16} color="#666" />
-                    <Text fontSize={14} color="#666">App Version</Text>
+                    <Text fontSize={14} color="$colorPress">App Version</Text>
                   </XStack>
-                  <Text fontSize={14} color="#333">1.0.0</Text>
+                  <Text fontSize={14} color="$color">1.0.0</Text>
                 </XStack>
                 
                 <XStack justifyContent="space-between">
                   <XStack alignItems="center" space={8}>
                     <Icon name="file-document" size={16} color="#666" />
-                    <Text fontSize={14} color="#666">Terms of Service</Text>
+                    <Text fontSize={14} color="$colorPress">Terms of Service</Text>
                   </XStack>
                   <Text fontSize={14} color="#007bff">View</Text>
                 </XStack>
@@ -349,7 +317,7 @@ const SettingsPage = () => {
                 <XStack justifyContent="space-between">
                   <XStack alignItems="center" space={8}>
                     <Icon name="shield-account" size={16} color="#666" />
-                    <Text fontSize={14} color="#666">Privacy Policy</Text>
+                    <Text fontSize={14} color="$colorPress">Privacy Policy</Text>
                   </XStack>
                   <Text fontSize={14} color="#007bff">View</Text>
                 </XStack>
@@ -380,8 +348,8 @@ const SettingsPage = () => {
         visible={themeDropdownVisible}
         onClose={() => setThemeDropdownVisible(false)}
         options={themeOptions}
-        selectedValue={selectedTheme}
-        onSelect={setSelectedTheme}
+        selectedValue={settings.theme}
+        onSelect={setTheme}
         title="Select Theme"
       />
 
@@ -389,8 +357,8 @@ const SettingsPage = () => {
         visible={languageDropdownVisible}
         onClose={() => setLanguageDropdownVisible(false)}
         options={languageOptions}
-        selectedValue={selectedLanguage}
-        onSelect={setSelectedLanguage}
+        selectedValue={settings.language}
+        onSelect={setLanguage}
         title="Select Language"
       />
 
@@ -398,8 +366,8 @@ const SettingsPage = () => {
         visible={currencyDropdownVisible}
         onClose={() => setCurrencyDropdownVisible(false)}
         options={currencyOptions}
-        selectedValue={selectedCurrency}
-        onSelect={setSelectedCurrency}
+        selectedValue={settings.currency}
+        onSelect={setCurrency}
         title="Select Currency"
       />
     </YStack>
