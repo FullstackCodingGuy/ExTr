@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { TamaguiProvider, Theme } from 'tamagui';
-import { useColorScheme, StatusBar } from 'react-native';
+import { useColorScheme, StatusBar, Platform } from 'react-native';
 import { useSettingsStore } from '../store/settingsStore';
 import config from '../tamagui.config';
 
@@ -22,10 +22,14 @@ const ThemeProvider = ({ children }) => {
   useEffect(() => {
     if (activeTheme === 'dark') {
       StatusBar.setBarStyle('light-content');
-      StatusBar.setBackgroundColor('#000000');
+      if (Platform.OS === 'android') {
+        StatusBar.setBackgroundColor('#000000');
+      }
     } else {
       StatusBar.setBarStyle('dark-content');
-      StatusBar.setBackgroundColor('#f8f9fa');
+      if (Platform.OS === 'android') {
+        StatusBar.setBackgroundColor('#f8f9fa');
+      }
     }
   }, [activeTheme]);
 
