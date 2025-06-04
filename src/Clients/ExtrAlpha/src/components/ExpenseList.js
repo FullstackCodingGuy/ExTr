@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { YStack, XStack, Input, Button, Label, Select, Text, Card, H3, Separator } from 'tamagui';
 import { ScrollView } from 'react-native';
+import { useTheme } from '../hooks/useTheme';
 
 const ExpenseList = ({ expenses = [] }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState('all');
+  const { colors } = useTheme();
 
   const defaultExpenses = [
     { title: 'Groceries', amount: 50, date: '2023-10-01', category: 'Food' },
@@ -29,11 +31,11 @@ const ExpenseList = ({ expenses = [] }) => {
   const totalAmount = filteredExpenses.reduce((sum, expense) => sum + expense.amount, 0);
 
   return (
-    <YStack flex={1} backgroundColor="#f5f5f5">
+    <YStack flex={1} backgroundColor="$background">
       {/* Header Section */}
       <YStack padding={20} paddingBottom={10}>
-        <H3 textAlign="center" marginBottom={10} color="#333">Expense Tracker</H3>
-        <Card padding={15} backgroundColor="#007bff" borderRadius={12}>
+        <H3 textAlign="center" marginBottom={10} color="$color">Expense Tracker</H3>
+        <Card padding={15} backgroundColor="$blue8" borderRadius={12}>
           <YStack alignItems="center">
             <Text color="white" fontSize={14}>Total Expenses</Text>
             <Text color="white" fontSize={24} fontWeight="bold">${totalAmount.toFixed(2)}</Text>
@@ -45,24 +47,25 @@ const ExpenseList = ({ expenses = [] }) => {
       <YStack paddingHorizontal={20} paddingBottom={10}>
         <XStack space={10} alignItems="flex-end">
           <YStack flex={2} space={5}>
-            <Label fontSize={14} fontWeight="600" color="#666">Search</Label>
+            <Label fontSize={14} fontWeight="600" color="$colorPress">Search</Label>
             <Input
               value={searchQuery}
               onChangeText={setSearchQuery}
               placeholder="Search expenses..."
-              backgroundColor="white"
+              backgroundColor="$backgroundStrong"
               borderWidth={1}
-              borderColor="#e0e0e0"
+              borderColor="$borderColor"
               borderRadius={10}
               paddingHorizontal={15}
               height={45}
-              color="#333"
+              color="$color"
+              placeholderTextColor="$colorPress"
             />
           </YStack>
 
           <YStack flex={1} space={5}>
-            <Label fontSize={14} fontWeight="600" color="#666">Filter</Label>
-            <Select value={filter} onValueChange={setFilter} backgroundColor="white" borderRadius={10} height={45}>
+            <Label fontSize={14} fontWeight="600" color="$colorPress">Filter</Label>
+            <Select value={filter} onValueChange={setFilter} backgroundColor="$backgroundStrong" borderRadius={10} height={45}>
               <Select.Item value="all" label="All" />
               <Select.Item value="above100" label="> $100" />
               <Select.Item value="below100" label="≤ $100" />
@@ -80,11 +83,11 @@ const ExpenseList = ({ expenses = [] }) => {
             <Card 
               key={index} 
               padding={16} 
-              backgroundColor="white" 
+              backgroundColor="$backgroundStrong" 
               borderRadius={12} 
               borderWidth={1}
-              borderColor="#e0e0e0"
-              shadowColor="#000" 
+              borderColor="$borderColor"
+              shadowColor="$color" 
               shadowRadius={8}
               shadowOpacity={0.1}
               elevation={3}
@@ -92,12 +95,12 @@ const ExpenseList = ({ expenses = [] }) => {
               <XStack justifyContent="space-between" alignItems="center">
                 <YStack flex={1} space={4}>
                   <XStack justifyContent="space-between" alignItems="center">
-                    <Text fontWeight="700" fontSize={16} color="#333">{expense.title}</Text>
-                    <Text fontWeight="bold" fontSize={18} color="#007bff">${expense.amount}</Text>
+                    <Text fontWeight="700" fontSize={16} color="$color">{expense.title}</Text>
+                    <Text fontWeight="bold" fontSize={18} color="$blue8">${expense.amount}</Text>
                   </XStack>
                   
                   <XStack justifyContent="space-between" alignItems="center">
-                    <Text fontSize={13} color="#666">
+                    <Text fontSize={13} color="$colorPress">
                       {expense.category && `${expense.category} • `}{expense.date}
                     </Text>
                     <XStack space={8} alignItems="center">
@@ -105,9 +108,9 @@ const ExpenseList = ({ expenses = [] }) => {
                         width={8} 
                         height={8} 
                         borderRadius={4} 
-                        backgroundColor={expense.amount > 100 ? "#dc3545" : "#28a745"} 
+                        backgroundColor={expense.amount > 100 ? colors.danger : colors.success} 
                       />
-                      <Text fontSize={12} color="#888">
+                      <Text fontSize={12} color="$colorPress">
                         {expense.amount > 100 ? "High" : "Low"}
                       </Text>
                     </XStack>
@@ -119,10 +122,10 @@ const ExpenseList = ({ expenses = [] }) => {
 
           {filteredExpenses.length === 0 && (
             <YStack alignItems="center" paddingVertical={40}>
-              <Text fontSize={16} color="#666" textAlign="center">
+              <Text fontSize={16} color="$colorPress" textAlign="center">
                 No expenses found
               </Text>
-              <Text fontSize={14} color="#999" textAlign="center" marginTop={8}>
+              <Text fontSize={14} color="$colorPress" textAlign="center" marginTop={8}>
                 Try adjusting your search or filter criteria
               </Text>
             </YStack>

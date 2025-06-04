@@ -8,7 +8,6 @@ const defaultSettings = {
   language: 'en',
   currency: 'USD',
   notifications: true,
-  biometric: false,
 };
 
 // Theme options
@@ -85,7 +84,6 @@ export const useSettingsStore = create(
       getLanguage: () => get().settings.language,
       getCurrency: () => get().settings.currency,
       getNotifications: () => get().settings.notifications,
-      getBiometric: () => get().settings.biometric,
 
       // Theme specific actions
       setTheme: (theme) => {
@@ -123,16 +121,6 @@ export const useSettingsStore = create(
           settings: {
             ...state.settings,
             notifications,
-          },
-        }));
-      },
-
-      // Biometric specific actions
-      setBiometric: (biometric) => {
-        set((state) => ({
-          settings: {
-            ...state.settings,
-            biometric,
           },
         }));
       },

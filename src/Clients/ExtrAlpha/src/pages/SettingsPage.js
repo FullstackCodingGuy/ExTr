@@ -11,8 +11,8 @@ const SettingsPage = () => {
     setTheme, 
     setLanguage, 
     setCurrency, 
-    setNotifications, 
-    setBiometric 
+    setNotifications,
+    resetSettings
   } = useSettingsStore();
   
   // Dropdown state
@@ -40,7 +40,7 @@ const SettingsPage = () => {
           <XStack justifyContent="space-between" alignItems="center" marginBottom={15}>
             <Text fontSize={18} fontWeight="bold" color="$color">{title}</Text>
             <TouchableOpacity onPress={onClose}>
-              <Icon name="close" size={24} color="#666" />
+              <Icon name="close" size={24} color="$colorPress" />
             </TouchableOpacity>
           </XStack>
           
@@ -59,13 +59,13 @@ const SettingsPage = () => {
                     borderRadius={8} 
                     backgroundColor={selectedValue === option.value ? "$blue2" : "transparent"}
                     borderWidth={selectedValue === option.value ? 1 : 0}
-                    borderColor={selectedValue === option.value ? "#007bff" : "transparent"}
+                    borderColor={selectedValue === option.value ? "$blue8" : "transparent"}
                     alignItems="center"
                     justifyContent="space-between"
                   >
                     <Text color="$color" fontSize={14}>{option.label}</Text>
                     {selectedValue === option.value && (
-                      <Icon name="check" size={20} color="#007bff" />
+                      <Icon name="check" size={20} color="$blue8" />
                     )}
                   </XStack>
                 </TouchableOpacity>
@@ -107,12 +107,26 @@ const SettingsPage = () => {
     );
   };
 
+  const handleSignOut = () => {
+    Alert.alert(
+      'Sign Out', 
+      'Are you sure you want to sign out?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Sign Out', style: 'destructive', onPress: () => {
+          resetSettings();
+          console.log('User signed out...');
+        }}
+      ]
+    );
+  };
+
   return (
     <YStack flex={1} backgroundColor="$background">
       {/* Header Section */}
       <YStack padding={20} paddingBottom={10} backgroundColor="$backgroundStrong" borderBottomWidth={1} borderBottomColor="$borderColor">
         <XStack alignItems="center" justifyContent="center" space={10}>
-          <Icon name="cog" size={24} color="#007bff" />
+          <Icon name="cog" size={24} color="$blue8" />
           <H3 textAlign="center" color="$color">Settings</H3>
         </XStack>
       </YStack>
@@ -124,7 +138,7 @@ const SettingsPage = () => {
           <Card elevation={2} padding={16} backgroundColor="$backgroundStrong" borderRadius={12} borderWidth={1} borderColor="$borderColor">
             <YStack space={15}>
               <XStack alignItems="center" space={10}>
-                <Icon name="palette" size={20} color="#007bff" />
+                <Icon name="palette" size={20} color="$blue8" />
                 <Text fontSize={18} fontWeight="bold" color="$color">Appearance</Text>
               </XStack>
               
@@ -144,7 +158,7 @@ const SettingsPage = () => {
                     <Text color="$color" fontSize={14}>
                       {themeOptions.find(option => option.value === settings.theme)?.label}
                     </Text>
-                    <Icon name="chevron-down" size={20} color="#666" />
+                    <Icon name="chevron-down" size={20} color="$colorPress" />
                   </XStack>
                 </TouchableOpacity>
               </YStack>
@@ -155,7 +169,7 @@ const SettingsPage = () => {
           <Card elevation={2} padding={16} backgroundColor="$backgroundStrong" borderRadius={12} borderWidth={1} borderColor="$borderColor">
             <YStack space={15}>
               <XStack alignItems="center" space={10}>
-                <Icon name="translate" size={20} color="#007bff" />
+                <Icon name="translate" size={20} color="$blue8" />
                 <Text fontSize={18} fontWeight="bold" color="$color">Language & Region</Text>
               </XStack>
               
@@ -175,7 +189,7 @@ const SettingsPage = () => {
                     <Text color="$color" fontSize={14}>
                       {languageOptions.find(option => option.value === settings.language)?.label}
                     </Text>
-                    <Icon name="chevron-down" size={20} color="#666" />
+                    <Icon name="chevron-down" size={20} color="$colorPress" />
                   </XStack>
                 </TouchableOpacity>
               </YStack>
@@ -196,7 +210,7 @@ const SettingsPage = () => {
                     <Text color="$color" fontSize={14}>
                       {currencyOptions.find(option => option.value === settings.currency)?.label}
                     </Text>
-                    <Icon name="chevron-down" size={20} color="#666" />
+                    <Icon name="chevron-down" size={20} color="$colorPress" />
                   </XStack>
                 </TouchableOpacity>
               </YStack>
@@ -207,42 +221,27 @@ const SettingsPage = () => {
           <Card elevation={2} padding={16} backgroundColor="$backgroundStrong" borderRadius={12} borderWidth={1} borderColor="$borderColor">
             <YStack space={15}>
               <XStack alignItems="center" space={10}>
-                <Icon name="bell" size={20} color="#007bff" />
+                <Icon name="bell" size={20} color="$blue8" />
                 <Text fontSize={18} fontWeight="bold" color="$color">Notifications</Text>
               </XStack>
               
               <XStack justifyContent="space-between" alignItems="center">
-                <YStack>
-                  <Text fontSize={14} fontWeight="600" color="$colorPress">Push Notifications</Text>
+                <YStack flex={1}>
+                  <Text fontSize={14} fontWeight="600" color="$color">Push Notifications</Text>
                   <Text fontSize={12} color="$colorPress">Receive expense reminders and updates</Text>
                 </YStack>
                 <Switch 
+                  size="$4"
                   checked={settings.notifications} 
                   onCheckedChange={setNotifications}
-                  backgroundColor={settings.notifications ? "#007bff" : "#e0e0e0"}
-                />
-              </XStack>
-            </YStack>
-          </Card>
-
-          {/* Security Section */}
-          <Card elevation={2} padding={16} backgroundColor="$backgroundStrong" borderRadius={12} borderWidth={1} borderColor="$borderColor">
-            <YStack space={15}>
-              <XStack alignItems="center" space={10}>
-                <Icon name="shield-check" size={20} color="#007bff" />
-                <Text fontSize={18} fontWeight="bold" color="$color">Security</Text>
-              </XStack>
-              
-              <XStack justifyContent="space-between" alignItems="center">
-                <YStack>
-                  <Text fontSize={14} fontWeight="600" color="$colorPress">Biometric Authentication</Text>
-                  <Text fontSize={12} color="$colorPress">Use fingerprint or face ID to unlock</Text>
-                </YStack>
-                <Switch 
-                  checked={settings.biometric} 
-                  onCheckedChange={setBiometric}
-                  backgroundColor={settings.biometric ? "#007bff" : "#e0e0e0"}
-                />
+                  backgroundColor={settings.notifications ? "$blue8" : "$gray6"}
+                  borderColor={settings.notifications ? "$blue8" : "$gray6"}
+                >
+                  <Switch.Thumb 
+                    animation="bouncy" 
+                    backgroundColor="white"
+                  />
+                </Switch>
               </XStack>
             </YStack>
           </Card>
@@ -251,37 +250,74 @@ const SettingsPage = () => {
           <Card elevation={2} padding={16} backgroundColor="$backgroundStrong" borderRadius={12} borderWidth={1} borderColor="$borderColor">
             <YStack space={15}>
               <XStack alignItems="center" space={10}>
-                <Icon name="database" size={20} color="#007bff" />
+                <Icon name="database" size={20} color="$blue8" />
                 <Text fontSize={18} fontWeight="bold" color="$color">Data & Privacy</Text>
               </XStack>
               
               <YStack space={12}>
-                <XStack justifyContent="space-between" alignItems="center">
-                  <XStack alignItems="center" space={8}>
-                    <Icon name="export" size={16} color="#666" />
-                    <Text fontSize={14} color="$colorPress">Export Data</Text>
+                <XStack justifyContent="space-between" alignItems="center" minHeight={40}>
+                  <XStack alignItems="center" space={8} flex={1}>
+                    <Icon name="export" size={18} color="$blue8" />
+                    <YStack>
+                      <Text fontSize={14} fontWeight="600" color="$color">Export Data</Text>
+                      <Text fontSize={12} color="$colorPress">Download your expense data</Text>
+                    </YStack>
                   </XStack>
-                  <Button size="small" backgroundColor="#007bff" color="white" borderRadius={6} onPress={handleExportData}>
+                  <Button 
+                    size="$3" 
+                    backgroundColor="$blue8" 
+                    color="white" 
+                    borderRadius={8} 
+                    onPress={handleExportData}
+                    paddingHorizontal={16}
+                    pressStyle={{ backgroundColor: "$blue9" }}
+                  >
                     Export
                   </Button>
                 </XStack>
                 
-                <XStack justifyContent="space-between" alignItems="center">
-                  <XStack alignItems="center" space={8}>
-                    <Icon name="delete-sweep" size={16} color="#666" />
-                    <Text fontSize={14} color="$colorPress">Clear Cache</Text>
+                <Separator />
+                
+                <XStack justifyContent="space-between" alignItems="center" minHeight={40}>
+                  <XStack alignItems="center" space={8} flex={1}>
+                    <Icon name="delete-sweep" size={18} color="$colorPress" />
+                    <YStack>
+                      <Text fontSize={14} fontWeight="600" color="$color">Clear Cache</Text>
+                      <Text fontSize={12} color="$colorPress">Free up storage space</Text>
+                    </YStack>
                   </XStack>
-                  <Button size="small" backgroundColor="#6c757d" color="white" borderRadius={6} onPress={handleClearCache}>
+                  <Button 
+                    size="$3" 
+                    backgroundColor="$gray8" 
+                    color="white" 
+                    borderRadius={8} 
+                    onPress={handleClearCache}
+                    paddingHorizontal={16}
+                    pressStyle={{ backgroundColor: "$gray9" }}
+                  >
                     Clear
                   </Button>
                 </XStack>
 
-                <XStack justifyContent="space-between" alignItems="center">
-                  <XStack alignItems="center" space={8}>
-                    <Icon name="delete-forever" size={16} color="#dc3545" />
-                    <Text fontSize={14} color="#dc3545">Delete All Data</Text>
+                <Separator />
+
+                <XStack justifyContent="space-between" alignItems="center" minHeight={40}>
+                  <XStack alignItems="center" space={8} flex={1}>
+                    <Icon name="delete-forever" size={18} color="$red8" />
+                    <YStack>
+                      <Text fontSize={14} fontWeight="600" color="$red8">Delete All Data</Text>
+                      <Text fontSize={12} color="$colorPress">Permanently remove all data</Text>
+                    </YStack>
                   </XStack>
-                  <Button size="small" backgroundColor="#dc3545" color="white" borderRadius={6} onPress={handleDeleteAllData}>
+                  <Button 
+                    size="$3" 
+                    backgroundColor="$red8" 
+                    color="white" 
+                    borderRadius={8} 
+                    onPress={handleDeleteAllData}
+                    paddingHorizontal={16}
+                    pressStyle={{ backgroundColor: "$red9" }}
+                  >
                     Delete
                   </Button>
                 </XStack>
@@ -293,14 +329,14 @@ const SettingsPage = () => {
           <Card elevation={2} padding={16} backgroundColor="$backgroundStrong" borderRadius={12} borderWidth={1} borderColor="$borderColor">
             <YStack space={15}>
               <XStack alignItems="center" space={10}>
-                <Icon name="information" size={20} color="#007bff" />
+                <Icon name="information" size={20} color="$blue8" />
                 <Text fontSize={18} fontWeight="bold" color="$color">About</Text>
               </XStack>
               
               <YStack space={8}>
                 <XStack justifyContent="space-between">
                   <XStack alignItems="center" space={8}>
-                    <Icon name="application" size={16} color="#666" />
+                    <Icon name="application" size={16} color="$colorPress" />
                     <Text fontSize={14} color="$colorPress">App Version</Text>
                   </XStack>
                   <Text fontSize={14} color="$color">1.0.0</Text>
@@ -325,21 +361,39 @@ const SettingsPage = () => {
             </YStack>
           </Card>
 
-          {/* Save Button */}
-          <Button 
-            backgroundColor="#007bff" 
-            borderRadius={10} 
-            onPress={handleSaveSettings}
-            elevation={3}
-            pressStyle={{ backgroundColor: "#0056b3" }}
-            height={50}
-            marginTop={10}
-          >
-            <XStack alignItems="center" justifyContent="center" space={8} paddingHorizontal={20}>
-              <Icon name="content-save" size={18} color="white" />
-              <Text color="white" fontSize={16} fontWeight="bold">Save Settings</Text>
-            </XStack>
-          </Button>
+          {/* Sign Out Section */}
+          <Card elevation={2} padding={16} backgroundColor="$backgroundStrong" borderRadius={12} borderWidth={1} borderColor="$borderColor">
+            <YStack space={15}>
+              <XStack alignItems="center" space={10}>
+                <Icon name="logout" size={20} color="#dc3545" />
+                <Text fontSize={18} fontWeight="bold" color="$color">Account</Text>
+              </XStack>
+              
+              <XStack justifyContent="space-between" alignItems="center" minHeight={40}>
+                <XStack alignItems="center" space={8} flex={1}>
+                  <Icon name="account-remove" size={18} color="#dc3545" />
+                  <YStack>
+                    <Text fontSize={14} fontWeight="600" color="#dc3545">Sign Out</Text>
+                    <Text fontSize={12} color="$colorPress">Sign out of your account</Text>
+                  </YStack>
+                </XStack>
+                <Button 
+                  size="$3" 
+                  backgroundColor="#dc3545" 
+                  color="white" 
+                  borderRadius={8} 
+                  onPress={handleSignOut}
+                  paddingHorizontal={16}
+                  pressStyle={{ backgroundColor: "#c82333" }}
+                >
+                  <XStack alignItems="center" space={6}>
+                    <Icon name="logout" size={14} color="white" />
+                    <Text color="white" fontSize={14} fontWeight="600">Sign Out</Text>
+                  </XStack>
+                </Button>
+              </XStack>
+            </YStack>
+          </Card>
         </YStack>
       </ScrollView>
 
